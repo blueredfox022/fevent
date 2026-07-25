@@ -15,10 +15,12 @@ export default function CreateEventPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [banner, setBanner] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
-  const [eventTime, setEventTime] = useState("");
+
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
+
     setBanner(file);
     setPreview(URL.createObjectURL(file));
   };
@@ -30,7 +32,6 @@ export default function CreateEventPage() {
     formData.append("description", description);
     formData.append("location", location);
     formData.append("event_date", eventDate);
-    formData.append("event_time", eventTime);
     formData.append("quota", quota);
     formData.append("use_certificate", useCertificate ? "1" : "0");
     if (banner) {
@@ -40,6 +41,7 @@ export default function CreateEventPage() {
     try {
       setIsLoading(true);
       await createEvent(formData);
+
       alert("Event berhasil dibuat");
       navigate("/admin/events");
     } catch (error: unknown) {
@@ -57,6 +59,7 @@ export default function CreateEventPage() {
   return (
     <AdminLayout>
       <div className="max-w-2xl">
+        {/* Back Link */}
         <Link
           to="/admin/events"
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 mb-6 transition-colors"
@@ -77,6 +80,7 @@ export default function CreateEventPage() {
           Kembali
         </Link>
 
+        {/* Form */}
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
           <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-700 px-6 py-5 text-white">
             <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
@@ -105,7 +109,7 @@ export default function CreateEventPage() {
             </div>
           </div>
 
-          <div className="p-5 sm:p-6 space-y-5">
+          <div className="p-6 space-y-5">
             <div>
               <label className={labelClasses}>
                 Nama Event <span className="text-red-500">*</span>
@@ -140,7 +144,7 @@ export default function CreateEventPage() {
                 className={fieldClasses}
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className={labelClasses}>
                   Tanggal <span className="text-red-500">*</span>
@@ -152,44 +156,7 @@ export default function CreateEventPage() {
                   className={fieldClasses}
                 />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className={labelClasses}>
-                    Tanggal <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    value={eventDate}
-                    onChange={(e) => setEventDate(e.target.value)}
-                    className={fieldClasses}
-                  />
-                </div>
-                <div>
-                  <label className={labelClasses}>
-                    Jam <span className="text-red-500">*</span>
-                  </label>
 
-                  <input
-                    type="time"
-                    value={eventTime}
-                    onChange={(e) => setEventTime(e.target.value)}
-                    className={fieldClasses}
-                  />
-                </div>
-
-                <div>
-                  <label className={labelClasses}>
-                    Kuota <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={quota}
-                    onChange={(e) => setQuota(e.target.value)}
-                    className={fieldClasses}
-                  />
-                </div>
-              </div>
               <div>
                 <label className={labelClasses}>
                   Kuota <span className="text-red-500">*</span>
@@ -202,39 +169,22 @@ export default function CreateEventPage() {
                   onChange={(e) => setQuota(e.target.value)}
                   className={fieldClasses}
                 />
-                <p className="mt-1.5 text-xs text-slate-400">
-                  Masukkan 0 jika peserta tidak dibatasi.
-                </p>
+                <p>Masukkan 0 jika peserta tidak dibatasi.</p>
               </div>
             </div>
-
-            {/* Certificate toggle */}
-            <label className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100 transition">
-              <div
-                className={`relative w-11 h-6 rounded-full transition-colors ${useCertificate ? "bg-blue-600" : "bg-slate-300"}`}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${useCertificate ? "translate-x-5" : ""}`}
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={useCertificate}
+                  onChange={(e) => setUseCertificate(e.target.checked)}
                 />
-              </div>
-              <input
-                type="checkbox"
-                checked={useCertificate}
-                onChange={(e) => setUseCertificate(e.target.checked)}
-                className="sr-only"
-              />
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-700">
-                  Sediakan Sertifikat
-                </p>
-                <p className="text-xs text-slate-500">
-                  Aktifkan penerbitan sertifikat untuk event ini
-                </p>
-              </div>
-            </label>
-
+                Event menyediakan sertifikat
+              </label>
+            </div>
             <div>
               <label className={labelClasses}>Banner Event</label>
+
               <div className="relative rounded-xl border-2 border-dashed border-slate-300 hover:border-blue-500 transition-colors px-4 py-3 cursor-pointer">
                 <input
                   type="file"
@@ -243,6 +193,7 @@ export default function CreateEventPage() {
                   className="w-full text-sm text-slate-500 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-600 file:font-semibold cursor-pointer"
                 />
               </div>
+
               {preview && (
                 <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 animate-scale-in">
                   <img
@@ -253,7 +204,6 @@ export default function CreateEventPage() {
                 </div>
               )}
             </div>
-
             <div className="flex gap-3 pt-2">
               <button
                 type="button"
@@ -263,6 +213,7 @@ export default function CreateEventPage() {
               >
                 {isLoading ? "Menyimpan..." : "Simpan Event"}
               </button>
+
               <button
                 type="button"
                 onClick={() => navigate("/admin/events")}
