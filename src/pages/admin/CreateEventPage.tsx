@@ -15,7 +15,7 @@ export default function CreateEventPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [banner, setBanner] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
-
+  const [eventTime, setEventTime] = useState("");
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -33,6 +33,7 @@ export default function CreateEventPage() {
     formData.append("location", location);
     formData.append("event_date", eventDate);
     formData.append("quota", quota);
+    formData.append("event_time", eventTime);
     formData.append("use_certificate", useCertificate ? "1" : "0");
     if (banner) {
       formData.append("banner", banner);
@@ -144,7 +145,7 @@ export default function CreateEventPage() {
                 className={fieldClasses}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className={labelClasses}>
                   Tanggal <span className="text-red-500">*</span>
@@ -156,7 +157,18 @@ export default function CreateEventPage() {
                   className={fieldClasses}
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Jam
+                </label>
 
+                <input
+                  type="time"
+                  value={eventTime}
+                  onChange={(e) => setEventTime(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg"
+                />
+              </div>
               <div>
                 <label className={labelClasses}>
                   Kuota <span className="text-red-500">*</span>
