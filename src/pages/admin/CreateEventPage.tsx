@@ -15,7 +15,7 @@ export default function CreateEventPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [banner, setBanner] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
-
+  const [eventTime, setEventTime] = useState("");
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -30,6 +30,7 @@ export default function CreateEventPage() {
     formData.append("description", description);
     formData.append("location", location);
     formData.append("event_date", eventDate);
+    formData.append("event_time", eventTime);
     formData.append("quota", quota);
     formData.append("use_certificate", useCertificate ? "1" : "0");
     if (banner) {
@@ -60,8 +61,18 @@ export default function CreateEventPage() {
           to="/admin/events"
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 mb-6 transition-colors"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           Kembali
         </Link>
@@ -71,13 +82,25 @@ export default function CreateEventPage() {
             <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
             <div className="relative flex items-center gap-3">
               <div className="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
                 </svg>
               </div>
               <div>
                 <h1 className="text-lg font-bold">Buat Event Baru</h1>
-                <p className="text-sm text-blue-100">Tambahkan event kampus baru</p>
+                <p className="text-sm text-blue-100">
+                  Tambahkan event kampus baru
+                </p>
               </div>
             </div>
           </div>
@@ -129,6 +152,44 @@ export default function CreateEventPage() {
                   className={fieldClasses}
                 />
               </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className={labelClasses}>
+                    Tanggal <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    className={fieldClasses}
+                  />
+                </div>
+
+                <div>
+                  <label className={labelClasses}>
+                    Jam <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="time"
+                    value={eventTime}
+                    onChange={(e) => setEventTime(e.target.value)}
+                    className={fieldClasses}
+                  />
+                </div>
+
+                <div>
+                  <label className={labelClasses}>
+                    Kuota <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={quota}
+                    onChange={(e) => setQuota(e.target.value)}
+                    className={fieldClasses}
+                  />
+                </div>
+              </div>
               <div>
                 <label className={labelClasses}>
                   Kuota <span className="text-red-500">*</span>
@@ -141,14 +202,20 @@ export default function CreateEventPage() {
                   onChange={(e) => setQuota(e.target.value)}
                   className={fieldClasses}
                 />
-                <p className="mt-1.5 text-xs text-slate-400">Masukkan 0 jika peserta tidak dibatasi.</p>
+                <p className="mt-1.5 text-xs text-slate-400">
+                  Masukkan 0 jika peserta tidak dibatasi.
+                </p>
               </div>
             </div>
 
             {/* Certificate toggle */}
             <label className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100 transition">
-              <div className={`relative w-11 h-6 rounded-full transition-colors ${useCertificate ? "bg-blue-600" : "bg-slate-300"}`}>
-                <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${useCertificate ? "translate-x-5" : ""}`} />
+              <div
+                className={`relative w-11 h-6 rounded-full transition-colors ${useCertificate ? "bg-blue-600" : "bg-slate-300"}`}
+              >
+                <span
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${useCertificate ? "translate-x-5" : ""}`}
+                />
               </div>
               <input
                 type="checkbox"
@@ -157,8 +224,12 @@ export default function CreateEventPage() {
                 className="sr-only"
               />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-700">Sediakan Sertifikat</p>
-                <p className="text-xs text-slate-500">Aktifkan penerbitan sertifikat untuk event ini</p>
+                <p className="text-sm font-semibold text-slate-700">
+                  Sediakan Sertifikat
+                </p>
+                <p className="text-xs text-slate-500">
+                  Aktifkan penerbitan sertifikat untuk event ini
+                </p>
               </div>
             </label>
 
@@ -174,7 +245,11 @@ export default function CreateEventPage() {
               </div>
               {preview && (
                 <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 animate-scale-in">
-                  <img src={preview} alt="Preview Banner" className="h-56 w-full object-cover" />
+                  <img
+                    src={preview}
+                    alt="Preview Banner"
+                    className="h-56 w-full object-cover"
+                  />
                 </div>
               )}
             </div>
