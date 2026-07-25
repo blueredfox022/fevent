@@ -140,7 +140,7 @@ export default function CreateEventPage() {
                 className={fieldClasses}
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className={labelClasses}>
                   Tanggal <span className="text-red-500">*</span>
@@ -164,11 +164,11 @@ export default function CreateEventPage() {
                     className={fieldClasses}
                   />
                 </div>
-
                 <div>
                   <label className={labelClasses}>
                     Jam <span className="text-red-500">*</span>
                   </label>
+
                   <input
                     type="time"
                     value={eventTime}
