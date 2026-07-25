@@ -115,8 +115,18 @@ export default function EditEventPage() {
           to="/admin/events"
           className="mb-6 inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 transition-colors"
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           Kembali
         </Link>
@@ -126,13 +136,25 @@ export default function EditEventPage() {
             <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
             <div className="relative flex items-center gap-3">
               <div className="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
                 </svg>
               </div>
               <div>
                 <h1 className="text-lg font-bold">Edit Event</h1>
-                <p className="text-sm text-amber-100">Perbarui informasi event</p>
+                <p className="text-sm text-amber-100">
+                  Perbarui informasi event
+                </p>
               </div>
             </div>
           </div>
@@ -223,12 +245,16 @@ export default function EditEventPage() {
 
               {preview ? (
                 <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 animate-scale-in">
-                  <img src={preview} alt="Preview Banner" className="h-56 w-full object-cover" />
+                  <img
+                    src={preview}
+                    alt="Preview Banner"
+                    className="h-56 w-full object-cover"
+                  />
                 </div>
               ) : oldBanner ? (
                 <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
                   <img
-                    src={`http://127.0.0.1:8000/storage/${oldBanner}`}
+                    src={`${import.meta.env.VITE_API_URL}/storage/${oldBanner}`}
                     alt="Banner Lama"
                     className="h-56 w-full object-cover"
                   />
@@ -239,7 +265,9 @@ export default function EditEventPage() {
                 </div>
               )}
 
-              <p className="mt-2 text-xs text-slate-500">Kosongkan jika tidak ingin mengganti banner.</p>
+              <p className="mt-2 text-xs text-slate-500">
+                Kosongkan jika tidak ingin mengganti banner.
+              </p>
             </div>
 
             <div className="flex gap-3 pt-2">

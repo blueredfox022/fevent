@@ -1,7 +1,7 @@
 import axios from "axios";
-
+export const API_URL = import.meta.env.VITE_API_URL.replace(/\/$/, "");
 const api = axios.create({
-  baseURL: "https://eventweb-iota.vercel.app/api",
+  baseURL: `${API_URL}/api`,
 });
 
 api.interceptors.request.use((config) => {
