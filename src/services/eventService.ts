@@ -40,8 +40,12 @@ export const deleteEvent = async (id: number) => {
   return response.data;
 };
 
-export const updateEvent = async (id: string | number, payload: FormData) => {
-  const response = await api.post("/events", payload);
+export const updateEvent = async (id: string | number, data: FormData) => {
+  const response = await api.post(`/events/${id}?_method=PUT`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
   return response.data;
 };

@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 
 import PublicLayout from "../../layouts/PublicLayout";
 import { getEventDetail } from "../../services/eventService";
-import { API_URL } from "../../services/api";
 import type { Event } from "../../types/event";
 
 export default function EventDetailPage() {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { API_URL } from "../../services/api";
 import PublicLayout from "../../layouts/PublicLayout";
 import { getEvents } from "../../services/eventService";
 
