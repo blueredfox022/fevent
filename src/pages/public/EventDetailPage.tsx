@@ -4,7 +4,6 @@ import { useParams, Link } from "react-router-dom";
 import PublicLayout from "../../layouts/PublicLayout";
 import { getEventDetail } from "../../services/eventService";
 import { API_URL } from "../../services/api";
-
 import type { Event } from "../../types/event";
 
 export default function EventDetailPage() {
@@ -116,7 +115,7 @@ export default function EventDetailPage() {
             <div className="relative h-56 sm:h-72 overflow-hidden">
               {event.banner ? (
                 <img
-                  src={`${API_URL}/storage/${event.banner}`}
+                  src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${event.banner}`}
                   alt="Banner Lama"
                   className="h-56 w-full object-cover"
                 />

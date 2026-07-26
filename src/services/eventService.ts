@@ -26,11 +26,7 @@ export const registerParticipant = async (
   return response.data;
 };
 export const createEvent = async (payload: FormData) => {
-  const response = await api.post("/events", payload, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await api.post("/events", payload);
 
   return response.data;
 };
@@ -44,12 +40,8 @@ export const deleteEvent = async (id: number) => {
   return response.data;
 };
 
-export const updateEvent = async (id: string | number, data: FormData) => {
-  const response = await api.post(`/events/${id}?_method=PUT`, data, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const updateEvent = async (id: string | number, payload: FormData) => {
+  const response = await api.post("/events", payload);
 
   return response.data;
 };

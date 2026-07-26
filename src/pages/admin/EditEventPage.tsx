@@ -269,7 +269,7 @@ export default function EditEventPage() {
               ) : oldBanner ? (
                 <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}/storage/${oldBanner}`}
+                    src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${oldBanner}`}
                     alt="Banner Lama"
                     className="h-56 w-full object-cover"
                   />

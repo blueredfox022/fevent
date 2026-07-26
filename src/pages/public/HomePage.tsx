@@ -244,7 +244,7 @@ export default function HomePage() {
                 <div className="relative h-44 sm:h-48 overflow-hidden">
                   {event.banner ? (
                     <img
-                      src={`${API_URL}/storage/${event.banner}`}
+                      src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${event.banner}`}
                       alt={event.title}
                       className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
