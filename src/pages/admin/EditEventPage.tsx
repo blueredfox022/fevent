@@ -12,6 +12,7 @@ type EventDetail = {
   event_date: string;
   event_time?: string;
   quota: number;
+  use_certificate: boolean;
   banner?: string | null;
 };
 
@@ -32,6 +33,7 @@ export default function EditEventPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
+  const [useCertificate, setUseCertificate] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -45,6 +47,7 @@ export default function EditEventPage() {
         setEventTime(data.event_time || "");
         setQuota(String(data.quota || ""));
         setOldBanner(data.banner || "");
+        setUseCertificate(Boolean(data.use_certificate));
       })
       .catch((error: unknown) => console.log(error))
       .finally(() => setIsFetching(false));
@@ -70,7 +73,7 @@ export default function EditEventPage() {
       formData.append("event_date", eventDate);
       formData.append("event_time", eventTime);
       formData.append("quota", quota);
-
+      formData.append("use_certificate", useCertificate ? "1" : "0");
       if (banner) {
         formData.append("banner", banner);
       }
@@ -231,7 +234,19 @@ export default function EditEventPage() {
                 />
               </div>
             </div>
+            <div>
+              <label className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={useCertificate}
+                  onChange={(e) => setUseCertificate(e.target.checked)}
+                />
 
+                <span className="text-sm font-medium">
+                  Event menyediakan sertifikat
+                </span>
+              </label>
+            </div>
             <div>
               <label className={labelClasses}>Banner Event</label>
               <div className="relative rounded-xl border-2 border-dashed border-slate-300 hover:border-blue-500 transition-colors px-4 py-3 cursor-pointer">
