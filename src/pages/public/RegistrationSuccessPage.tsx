@@ -23,7 +23,6 @@ export default function RegistrationSuccessPage() {
   const qrUrl = state?.participant?.qr_image
     ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${state.participant.qr_image}`
     : null;
-  const downloadQrUrl = state?.downloadQrUrl;
 
   const handleDownloadQr = () => {
     if (!qrUrl) {
