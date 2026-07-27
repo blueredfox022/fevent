@@ -23,14 +23,36 @@ export default function RegistrationSuccessPage() {
   const qrUrl = state?.participant?.qr_image
     ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${state.participant.qr_image}`
     : null;
-  const downloadQrUrl = state?.downloadQrUrl;
-
-  const handleDownloadQr = () => {
-    if (!downloadQrUrl) {
-      alert("Link download QR tidak tersedia.");
+  const handleDownloadQr = async () => {
+    if (!qrUrl || !participant) {
+      alert("QR Code tidak tersedia.");
       return;
     }
-    window.location.href = downloadQrUrl;
+
+    try {
+      const response = await fetch(qrUrl);
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil QR Code.");
+      }
+
+      const blob = await response.blob();
+
+      const objectUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = objectUrl;
+      a.download = `QR-${participant.nim}.png`;
+
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error(error);
+      alert("Gagal mengunduh QR Code.");
+    }
   };
 
   if (!participant) {
