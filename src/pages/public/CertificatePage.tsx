@@ -1,7 +1,6 @@
 import { useState } from "react";
 import PublicLayout from "../../layouts/PublicLayout";
-import { checkCertificate } from "../../services/eventService";
-
+import { checkCertificate } from "../../services/certificateService";
 export default function CertificatePage() {
   const [nim, setNim] = useState("");
   const [result, setResult] = useState<{
