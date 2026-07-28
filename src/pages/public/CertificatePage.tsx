@@ -13,6 +13,7 @@ export default function CertificatePage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Membentuk URL public Supabase Storage
   const certificateUrl = result?.certificate_file
     ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${result.certificate_file}`
     : null;
@@ -61,6 +62,7 @@ export default function CertificatePage() {
       const a = document.createElement("a");
 
       a.href = objectUrl;
+
       a.download = `Sertifikat-${nim}.pdf`;
 
       document.body.appendChild(a);
@@ -72,6 +74,7 @@ export default function CertificatePage() {
       URL.revokeObjectURL(objectUrl);
     } catch (error) {
       console.error(error);
+
       alert("Gagal mengunduh sertifikat.");
     }
   };
@@ -109,7 +112,7 @@ export default function CertificatePage() {
 
             <button
               disabled={loading}
-              className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white"
+              className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white disabled:opacity-50"
             >
               {loading ? "Mencari..." : "Cari Sertifikat"}
             </button>
@@ -125,7 +128,7 @@ export default function CertificatePage() {
 
               <button
                 onClick={handleDownloadCertificate}
-                className="mt-4 block w-full rounded-xl bg-green-600 py-3 text-center font-semibold text-white"
+                className="mt-4 block w-full rounded-xl bg-green-600 py-3 text-center font-semibold text-white hover:bg-green-700"
               >
                 Download Sertifikat
               </button>
