@@ -12,11 +12,11 @@ import CreateEventPage from "../pages/admin/CreateEventPage";
 
 import ParticipantPage from "../pages/admin/ParticipantPage";
 import ValidateQrPage from "../pages/admin/ValidateQrPage";
-import CertificatePage from "../pages/admin/CertificatePage";
 import EditEventPage from "../pages/admin/EditEventPage";
 import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "../pages/admin/LoginPage";
-
+import AdminCertificatePage from "../pages/admin/CertificatePage";
+import PublicCertificatePage from "../pages/public/CertificatePage";
 export default function AppRoutes() {
   return (
     <BrowserRouter>
@@ -28,7 +28,7 @@ export default function AppRoutes() {
           path="/registration-success"
           element={<RegistrationSuccessPage />}
         />
-        <Route path="/certificate" element={<CertificatePage />} />
+        <Route path="/certificate/check" element={<PublicCertificatePage />} />
         <Route path="/admin/login" element={<LoginPage />} />
         <Route
           path="/admin/dashboard"
@@ -82,7 +82,7 @@ export default function AppRoutes() {
           path="/admin/certificates"
           element={
             <ProtectedRoute>
-              <CertificatePage />
+              <AdminCertificatePage />
             </ProtectedRoute>
           }
         />
