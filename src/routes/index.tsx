@@ -28,8 +28,8 @@ export default function AppRoutes() {
           path="/registration-success"
           element={<RegistrationSuccessPage />}
         />
+        <Route path="/certificate" element={<CertificatePage />} />
         <Route path="/admin/login" element={<LoginPage />} />
-
         <Route
           path="/admin/dashboard"
           element={
@@ -38,7 +38,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/events"
           element={
@@ -47,7 +46,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/events/create"
           element={
@@ -56,7 +54,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/events/:id/edit"
           element={
@@ -65,7 +62,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/events/:id/participants"
           element={
@@ -74,7 +70,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/validate-qr"
           element={
@@ -83,7 +78,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/certificates"
           element={

@@ -49,3 +49,8 @@ export const updateEvent = async (id: string | number, data: FormData) => {
 
   return response.data;
 };
+export const checkCertificate = async (nim: string) => {
+  const response = await api.get(`/certificate/check/${nim}`);
+
+  return response.data;
+};
