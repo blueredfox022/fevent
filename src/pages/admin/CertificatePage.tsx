@@ -17,11 +17,6 @@ type ParticipantType = {
   attendance_status: boolean | number | string;
 };
 
-type SendResult = {
-  message?: string;
-  total_sent?: number;
-};
-
 export default function CertificatePage() {
   const [events, setEvents] = useState<EventType[]>([]);
   const [participants, setParticipants] = useState<ParticipantType[]>([]);
