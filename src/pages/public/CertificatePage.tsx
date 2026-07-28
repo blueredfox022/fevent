@@ -5,7 +5,7 @@ export default function CertificatePage() {
   const [nim, setNim] = useState("");
   const [result, setResult] = useState<{
     name: string;
-    certificate_url: string;
+    download_url: string;
   } | null>(null);
 
   const [error, setError] = useState("");
@@ -36,13 +36,13 @@ export default function CertificatePage() {
   };
 
   const handleDownloadCertificate = async () => {
-    if (!result?.certificate_url) {
+    if (!result?.download_url) {
       alert("Sertifikat tidak tersedia.");
       return;
     }
 
     try {
-      const response = await fetch(result.certificate_url);
+      const response = await fetch(result.download_url);
 
       if (!response.ok) {
         throw new Error("Gagal mengambil sertifikat.");
@@ -115,9 +115,19 @@ export default function CertificatePage() {
               <p className="font-bold text-slate-800">{result.name}</p>
 
               <button
-                type="button"
-                onClick={handleDownloadCertificate}
-                className="mt-4 w-full rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
+                onClick={() => {
+                  const link = document.createElement("a");
+
+                  link.href = result.download_url;
+                  link.download = `Sertifikat-${result.name}.pdf`;
+
+                  document.body.appendChild(link);
+
+                  link.click();
+
+                  document.body.removeChild(link);
+                }}
+                className="mt-4 block w-full rounded-xl bg-green-600 py-3 text-center font-semibold text-white"
               >
                 Download Sertifikat
               </button>
