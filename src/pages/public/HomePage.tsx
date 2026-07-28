@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PublicLayout from "../../layouts/PublicLayout";
 import { getEvents } from "../../services/eventService";
+import { getParticipantsByEvent } from "../../services/participantService";
 
 import type { Event } from "../../types/event";
 
 export default function HomePage() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [filledQuota, setFilledQuota] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const latestEvent = events.length > 0 ? events[events.length - 1] : null;
+  const quotaPercent =
+    latestEvent && latestEvent.quota > 0
+      ? Math.min(Math.round((filledQuota / latestEvent.quota) * 100), 100)
+      : 0;
 
   useEffect(() => {
     fetchEvents();
@@ -18,6 +26,16 @@ export default function HomePage() {
     try {
       const data = await getEvents();
       setEvents(data);
+
+      if (data.length > 0) {
+        const latest = data[data.length - 1];
+        try {
+          const participants = await getParticipantsByEvent(latest.id);
+          setFilledQuota(participants.length);
+        } catch {
+          setFilledQuota(0);
+        }
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -314,101 +332,142 @@ export default function HomePage() {
 
           {/* Floating preview card */}
           <div className="hidden lg:block animate-fade-up animation-delay-200">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-white/10 rounded-3xl blur-2xl" />
-
-              <div className="relative bg-white/10 backdrop-blur-md rounded-2xl ring-1 ring-white/20 p-6 shadow-2xl">
-                <div className="flex items-center justify-between mb-5">
-                  <div>
-                    <p className="text-blue-200 text-xs font-semibold uppercase tracking-wider">
-                      Event Mendatang
-                    </p>
-
-                    <p className="text-white font-bold text-lg mt-0.5">
-                      {featuredEvent?.title ?? "Belum ada event"}
-                    </p>
+            {latestEvent ? (
+              <div className="relative">
+                <div className="absolute -inset-4 bg-white/10 rounded-3xl blur-2xl" />
+                <div className="relative bg-white/10 backdrop-blur-md rounded-2xl ring-1 ring-white/20 p-6 shadow-2xl">
+                  <div className="flex items-center justify-between mb-5 gap-3">
+                    <div className="min-w-0">
+                      <p className="text-blue-200 text-xs font-semibold uppercase tracking-wider">
+                        Event Mendatang
+                      </p>
+                      <p className="text-white font-bold text-lg mt-0.5 truncate">
+                        {latestEvent.title}
+                      </p>
+                    </div>
+                    <span className="shrink-0 px-2.5 py-1 rounded-full bg-green-400/20 text-green-200 text-xs font-semibold ring-1 ring-green-400/30">
+                      Aktif
+                    </span>
                   </div>
 
-                  <span className="px-2.5 py-1 rounded-full bg-green-400/20 text-green-200 text-xs font-semibold ring-1 ring-green-400/30">
-                    {featuredEvent ? "Aktif" : "Kosong"}
-                  </span>
-                </div>
+                  <div className="space-y-3 mb-5">
+                    <div className="flex items-center gap-3 text-blue-100 text-sm">
+                      <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                          />
+                        </svg>
+                      </span>
+                      <span className="truncate">{latestEvent.location}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-blue-100 text-sm">
+                      <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </span>
+                      {formatDate(latestEvent.event_date)}
+                    </div>
+                  </div>
 
-                <div className="space-y-3 mb-5">
-                  <div className="flex items-center gap-3 text-blue-100 text-sm">
-                    <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  {latestEvent.quota > 0 ? (
+                    <div className="bg-white/10 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-blue-100 text-xs">
+                          Kuota terisi
+                        </span>
+                        <span className="text-white text-xs font-bold">
+                          {filledQuota}/{latestEvent.quota}
+                        </span>
+                      </div>
+                      <div className="h-2 rounded-full bg-white/20 overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-green-400 to-blue-400 transition-all duration-700"
+                          style={{ width: `${quotaPercent}%` }}
                         />
-                      </svg>
-                    </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-white/10 rounded-xl p-4 text-center">
+                      <span className="text-white text-sm font-semibold">
+                        Tanpa Batas Kuota
+                      </span>
+                    </div>
+                  )}
 
-                    {featuredEvent?.location ?? "-"}
-                  </div>
-
-                  <div className="flex items-center gap-3 text-blue-100 text-sm">
-                    <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </span>
-
-                    {featuredEvent?.event_date ?? "-"}
-                  </div>
+                  <Link
+                    to={`/events/${latestEvent.id}`}
+                    className="mt-5 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-white text-blue-700 font-bold text-sm hover:bg-blue-50 transition"
+                  >
+                    Daftar Sekarang
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
+                    </svg>
+                  </Link>
                 </div>
 
-                <div className="bg-white/10 rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-blue-100 text-xs">Kuota Terisi</span>
-
-                    <span className="text-white text-xs font-bold">
-                      {quotaFilled}/{quota}
-                    </span>
-                  </div>
-
-                  <div className="h-2 rounded-full bg-white/20 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-green-400 to-blue-400"
-                      style={{ width: `${quotaPercentage}%` }}
-                    />
-                  </div>
+                {/* Floating badge */}
+                <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-float">
+                  QR Siap
                 </div>
-
-                <Link
-                  to={featuredEvent ? `/events/${featuredEvent.id}` : "#"}
-                  className={`mt-5 block w-full py-2.5 rounded-xl text-center font-bold text-sm transition ${
-                    featuredEvent
-                      ? "bg-white text-blue-700 hover:bg-blue-50"
-                      : "bg-slate-300 text-slate-500 cursor-not-allowed pointer-events-none"
-                  }`}
-                >
-                  Lihat Detail Event
-                </Link>
               </div>
-
-              <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-float">
-                {featuredEvent ? "Pendaftaran Dibuka" : "Belum Ada Event"}
+            ) : (
+              <div className="relative">
+                <div className="absolute -inset-4 bg-white/10 rounded-3xl blur-2xl" />
+                <div className="relative bg-white/10 backdrop-blur-md rounded-2xl ring-1 ring-white/20 p-6 shadow-2xl text-center">
+                  <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
+                    <svg
+                      className="w-7 h-7 text-blue-100"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-white font-bold text-lg mb-1">
+                    Event Segera Hadir
+                  </p>
+                  <p className="text-blue-100 text-sm">
+                    Pantau terus untuk event kampus terbaru!
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
