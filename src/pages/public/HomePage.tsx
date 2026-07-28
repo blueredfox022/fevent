@@ -280,7 +280,8 @@ export default function HomePage() {
             </h1>
             <p className="text-blue-100 text-base sm:text-lg mb-8 leading-relaxed">
               Daftarkan diri dalam berbagai event kampus, dapatkan QR code
-              kehadiran, dan raih sertifikat otomatis — semua dalam satu platform.
+              kehadiran, dan raih sertifikat otomatis — semua dalam satu
+              platform.
             </p>
             <div className="flex flex-wrap gap-3">
               <a
@@ -315,50 +316,97 @@ export default function HomePage() {
           <div className="hidden lg:block animate-fade-up animation-delay-200">
             <div className="relative">
               <div className="absolute -inset-4 bg-white/10 rounded-3xl blur-2xl" />
+
               <div className="relative bg-white/10 backdrop-blur-md rounded-2xl ring-1 ring-white/20 p-6 shadow-2xl">
                 <div className="flex items-center justify-between mb-5">
                   <div>
-                    <p className="text-blue-200 text-xs font-semibold uppercase tracking-wider">Event Mendatang</p>
-                    <p className="text-white font-bold text-lg mt-0.5">Seminar Teknologi AI</p>
+                    <p className="text-blue-200 text-xs font-semibold uppercase tracking-wider">
+                      Event Mendatang
+                    </p>
+
+                    <p className="text-white font-bold text-lg mt-0.5">
+                      {featuredEvent?.title ?? "Belum ada event"}
+                    </p>
                   </div>
+
                   <span className="px-2.5 py-1 rounded-full bg-green-400/20 text-green-200 text-xs font-semibold ring-1 ring-green-400/30">
-                    Aktif
+                    {featuredEvent ? "Aktif" : "Kosong"}
                   </span>
                 </div>
 
                 <div className="space-y-3 mb-5">
                   <div className="flex items-center gap-3 text-blue-100 text-sm">
                     <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /></svg>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                      </svg>
                     </span>
-                    Aula Utama, Gedung Rektorat
+
+                    {featuredEvent?.location ?? "-"}
                   </div>
+
                   <div className="flex items-center gap-3 text-blue-100 text-sm">
                     <span className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
                     </span>
-                    15 Oktober 2026
+
+                    {featuredEvent?.event_date ?? "-"}
                   </div>
                 </div>
 
                 <div className="bg-white/10 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-blue-100 text-xs">Kuota terisi</span>
-                    <span className="text-white text-xs font-bold">180/250</span>
+                    <span className="text-blue-100 text-xs">Kuota Terisi</span>
+
+                    <span className="text-white text-xs font-bold">
+                      {quotaFilled}/{quota}
+                    </span>
                   </div>
+
                   <div className="h-2 rounded-full bg-white/20 overflow-hidden">
-                    <div className="h-full w-[72%] rounded-full bg-gradient-to-r from-green-400 to-blue-400" />
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-green-400 to-blue-400"
+                      style={{ width: `${quotaPercentage}%` }}
+                    />
                   </div>
                 </div>
 
-                <button className="mt-5 w-full py-2.5 rounded-xl bg-white text-blue-700 font-bold text-sm hover:bg-blue-50 transition">
-                  Daftar Sekarang
-                </button>
+                <Link
+                  to={featuredEvent ? `/events/${featuredEvent.id}` : "#"}
+                  className={`mt-5 block w-full py-2.5 rounded-xl text-center font-bold text-sm transition ${
+                    featuredEvent
+                      ? "bg-white text-blue-700 hover:bg-blue-50"
+                      : "bg-slate-300 text-slate-500 cursor-not-allowed pointer-events-none"
+                  }`}
+                >
+                  Lihat Detail Event
+                </Link>
               </div>
 
-              {/* Floating badge */}
               <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-float">
-                QR Siap
+                {featuredEvent ? "Pendaftaran Dibuka" : "Belum Ada Event"}
               </div>
             </div>
           </div>
@@ -401,7 +449,7 @@ export default function HomePage() {
       {/* Partners marquee */}
       <section className="mb-14">
         <p className="text-center text-xs font-semibold text-slate-400 uppercase tracking-wider mb-5">
-            Dipercaya oleh unit kampus
+          Dipercaya oleh unit kampus
         </p>
         <div className="relative overflow-hidden">
           <div className="flex gap-4 marquee-track w-max">
@@ -438,7 +486,19 @@ export default function HomePage() {
             className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700"
           >
             Lihat semua
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
           </Link>
         </div>
 
@@ -694,7 +754,12 @@ export default function HomePage() {
             >
               <div className="flex items-center gap-1 mb-4 text-amber-400">
                 {Array.from({ length: t.rating }).map((_, i) => (
-                  <svg key={i} className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    key={i}
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
@@ -707,7 +772,9 @@ export default function HomePage() {
                   {t.name.charAt(0)}
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-800 text-sm">{t.name}</p>
+                  <p className="font-semibold text-slate-800 text-sm">
+                    {t.name}
+                  </p>
                   <p className="text-xs text-slate-500">{t.role}</p>
                 </div>
               </div>
@@ -750,14 +817,26 @@ export default function HomePage() {
                       open ? "rotate-45" : ""
                     }`}
                   >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M12 4v16m8-8H4"
+                      />
                     </svg>
                   </span>
                 </button>
                 <div
                   className={`grid transition-all duration-300 ${
-                    open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    open
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
                   <div className="overflow-hidden">
