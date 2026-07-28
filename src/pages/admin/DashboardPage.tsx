@@ -17,6 +17,7 @@ type EventType = {
 type ParticipantType = {
   id: number;
   name: string;
+  nim: string;
   attendance_status: boolean;
 };
 
@@ -115,12 +116,23 @@ export default function DashboardPage() {
       <div className="space-y-6">
         {/* Welcome Banner */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 p-6 sm:p-8 text-white shadow-lg shadow-blue-600/20">
-          <div className="absolute -top-16 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+          <div className="absolute -top-16 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-float" />
           <div className="absolute -bottom-20 -left-10 w-56 h-56 bg-indigo-400/10 rounded-full blur-3xl" />
-          <div className="relative">
-            <span className="inline-block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">Dashboard</span>
-            <h1 className="text-xl sm:text-2xl font-extrabold mb-1">Selamat Datang, Administrator!</h1>
-            <p className="text-blue-100 text-sm">Pantau dan kelola seluruh aktivitas event kampus dari sini.</p>
+          <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="inline-block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">Dashboard</span>
+              <h1 className="text-xl sm:text-2xl font-extrabold mb-1">Selamat Datang, Administrator!</h1>
+              <p className="text-blue-100 text-sm">Pantau dan kelola seluruh aktivitas event kampus dari sini.</p>
+            </div>
+            <a
+              href="/admin/events/create"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-blue-700 font-semibold text-sm hover:bg-blue-50 transition shadow-lg self-start sm:self-auto"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+              </svg>
+              Buat Event
+            </a>
           </div>
         </div>
 
@@ -131,7 +143,7 @@ export default function DashboardPage() {
             return (
               <div
                 key={stat.label}
-                className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 animate-fade-up"
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 animate-fade-up card-sheen"
                 style={{ animationDelay: `${index * 70}ms` }}
               >
                 <div className="flex items-center justify-between mb-3">
@@ -157,6 +169,9 @@ export default function DashboardPage() {
                 <h2 className="text-lg font-bold text-slate-800">Event Terbaru</h2>
                 <p className="text-xs text-slate-500 mt-0.5">5 event terakhir</p>
               </div>
+              <a href="/admin/events" className="text-sm font-semibold text-blue-600 hover:text-blue-700">
+                Lihat semua
+              </a>
             </div>
 
             <div className="overflow-x-auto">
@@ -164,7 +179,7 @@ export default function DashboardPage() {
                 <thead className="bg-slate-50">
                   <tr>
                     <th className="px-4 py-3 text-left font-semibold text-slate-600">Nama Event</th>
-                    <th className="px-4 py-3 text-left font-semibold text-slate-600">Tanggal</th>
+                    <th className="px-4 py-3 text-left font-semibold text-slate-600 hidden sm:table-cell">Tanggal</th>
                     <th className="px-4 py-3 text-left font-semibold text-slate-600">Lokasi</th>
                     <th className="px-4 py-3 text-left font-semibold text-slate-600">Kuota</th>
                   </tr>
@@ -184,14 +199,14 @@ export default function DashboardPage() {
                       <tr key={event.id} className="hover:bg-slate-50 transition-colors">
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold shadow-md shadow-blue-500/30">
+                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold shadow-md shadow-blue-500/30 shrink-0">
                               {event.title.charAt(0).toUpperCase()}
                             </div>
-                            <span className="font-semibold text-slate-800">{event.title}</span>
+                            <span className="font-semibold text-slate-800 truncate max-w-[160px]">{event.title}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-slate-600">{event.event_date}</td>
-                        <td className="px-4 py-3 text-slate-600">{event.location}</td>
+                        <td className="px-4 py-3 text-slate-600 hidden sm:table-cell whitespace-nowrap">{event.event_date}</td>
+                        <td className="px-4 py-3 text-slate-600 truncate max-w-[140px]">{event.location}</td>
                         <td className="px-4 py-3">
                           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
                             {event.quota}
@@ -205,7 +220,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Quick Actions */}
+          {/* Quick Actions + Status */}
           <div className="space-y-6">
             <div className="bg-white rounded-2xl border border-slate-200 p-5">
               <h2 className="text-lg font-bold text-slate-800 mb-4">Aksi Cepat</h2>
@@ -239,6 +254,36 @@ export default function DashboardPage() {
                   </svg>
                   <span className="font-semibold text-sm">Kirim Sertifikat</span>
                 </a>
+              </div>
+            </div>
+
+            {/* Attendance Progress */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-5">
+              <h2 className="text-lg font-bold text-slate-800 mb-1">Tingkat Kehadiran</h2>
+              <p className="text-xs text-slate-500 mb-4">Real-time dari seluruh event</p>
+
+              <div className="flex items-end justify-between mb-2">
+                <span className="text-3xl font-extrabold text-slate-800">{attendanceRate}%</span>
+                <span className="text-xs text-slate-500">
+                  {totalAttendance}/{totalParticipants} hadir
+                </span>
+              </div>
+              <div className="h-3 rounded-full bg-slate-100 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-green-500 to-blue-500 transition-all duration-700"
+                  style={{ width: `${attendanceRate}%` }}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                <div className="p-3 rounded-xl bg-green-50 text-center">
+                  <p className="text-lg font-extrabold text-green-700">{totalAttendance}</p>
+                  <p className="text-xs text-green-600">Hadir</p>
+                </div>
+                <div className="p-3 rounded-xl bg-red-50 text-center">
+                  <p className="text-lg font-extrabold text-red-700">{Math.max(totalParticipants - totalAttendance, 0)}</p>
+                  <p className="text-xs text-red-600">Belum Hadir</p>
+                </div>
               </div>
             </div>
 

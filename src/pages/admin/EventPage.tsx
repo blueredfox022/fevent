@@ -94,8 +94,8 @@ export default function EventPage() {
               <thead className="bg-slate-50">
                 <tr>
                   <th className="px-4 py-3.5 text-left font-semibold text-slate-600">Event</th>
-                  <th className="px-4 py-3.5 text-left font-semibold text-slate-600">Lokasi</th>
-                  <th className="px-4 py-3.5 text-left font-semibold text-slate-600">Tanggal</th>
+                  <th className="px-4 py-3.5 text-left font-semibold text-slate-600 hidden md:table-cell">Lokasi</th>
+                  <th className="px-4 py-3.5 text-left font-semibold text-slate-600 hidden sm:table-cell">Tanggal</th>
                   <th className="px-4 py-3.5 text-left font-semibold text-slate-600">Kuota</th>
                   <th className="px-4 py-3.5 text-left font-semibold text-slate-600">Aksi</th>
                 </tr>
@@ -129,15 +129,15 @@ export default function EventPage() {
                             {event.title.charAt(0).toUpperCase()}
                           </div>
                           <div className="min-w-0">
-                            <p className="font-semibold text-slate-800 truncate">{event.title}</p>
-                            <p className="text-xs text-slate-500 truncate max-w-xs">
+                            <p className="font-semibold text-slate-800 truncate max-w-[180px]">{event.title}</p>
+                            <p className="text-xs text-slate-500 truncate max-w-[220px]">
                               {event.description?.substring(0, 40) || "-"}
                             </p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-slate-600">{event.location}</td>
-                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{event.event_date}</td>
+                      <td className="px-4 py-3 text-slate-600 hidden md:table-cell">{event.location}</td>
+                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap hidden sm:table-cell">{event.event_date}</td>
                       <td className="px-4 py-3">
                         <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
                           {event.quota}

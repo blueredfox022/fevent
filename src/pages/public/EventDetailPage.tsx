@@ -111,12 +111,12 @@ export default function EventDetailPage() {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
             {/* Banner */}
-            <div className="relative h-56 sm:h-72 overflow-hidden">
+            <div className="relative h-56 sm:h-72 lg:h-80 overflow-hidden">
               {event.banner ? (
                 <img
                   src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${event.banner}`}
-                  alt="Banner Lama"
-                  className="h-56 w-full object-cover"
+                  alt={event.title}
+                  className="h-full w-full object-cover"
                 />
               ) : (
                 <div className="h-full bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700" />
@@ -139,7 +139,7 @@ export default function EventDetailPage() {
               <h2 className="text-lg font-bold text-slate-800 mb-3">
                 Tentang Event
               </h2>
-              <p className="text-slate-600 mb-6 leading-relaxed">
+              <p className="text-slate-600 mb-6 leading-relaxed whitespace-pre-line">
                 {event.description ||
                   "Event menarik yang wajib Anda ikuti. Daftar sekarang dan dapatkan pengalaman berharga!"}
               </p>
@@ -314,7 +314,7 @@ export default function EventDetailPage() {
                 <div className="min-w-0">
                   <p className="text-xs text-slate-500 mb-0.5">Kuota Peserta</p>
                   <p className="text-sm font-semibold text-slate-800">
-                    {event.quota} Peserta
+                    {event.quota === 0 ? "Tanpa Batas" : `${event.quota} Peserta`}
                   </p>
                 </div>
               </div>
@@ -340,6 +340,9 @@ export default function EventDetailPage() {
                   />
                 </svg>
               </Link>
+              <p className="text-center text-xs text-slate-400 mt-3">
+                Pendaftaran gratis untuk seluruh mahasiswa
+              </p>
             </div>
           </div>
         </div>

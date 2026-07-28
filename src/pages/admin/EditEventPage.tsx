@@ -234,19 +234,17 @@ export default function EditEventPage() {
                 />
               </div>
             </div>
-            <div>
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  checked={useCertificate}
-                  onChange={(e) => setUseCertificate(e.target.checked)}
-                />
-
-                <span className="text-sm font-medium">
-                  Event menyediakan sertifikat
-                </span>
-              </label>
-            </div>
+            <label className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
+              <input
+                type="checkbox"
+                checked={useCertificate}
+                onChange={(e) => setUseCertificate(e.target.checked)}
+                className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-slate-700">
+                Event menyediakan sertifikat
+              </span>
+            </label>
             <div>
               <label className={labelClasses}>Banner Event</label>
               <div className="relative rounded-xl border-2 border-dashed border-slate-300 hover:border-blue-500 transition-colors px-4 py-3 cursor-pointer">
