@@ -192,10 +192,6 @@ export default function RegistrationSuccessPage() {
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>
-                Simpan QR Code ini. QR Code juga telah dikirim ke email Anda dan
-                akan digunakan untuk absensi pada hari pelaksanaan event.
-              </span>
             </div>
 
             {/* KEMBALI */}
