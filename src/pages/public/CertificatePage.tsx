@@ -35,6 +35,38 @@ export default function CertificatePage() {
     }
   };
 
+  const handleDownloadCertificate = async () => {
+    if (!result?.certificate_url) {
+      alert("Sertifikat tidak tersedia.");
+      return;
+    }
+
+    try {
+      const response = await fetch(result.certificate_url);
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil sertifikat.");
+      }
+
+      const blob = await response.blob();
+
+      const objectUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = objectUrl;
+      a.download = `Sertifikat-${nim}.pdf`;
+
+      document.body.appendChild(a);
+      a.click();
+
+      a.remove();
+
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error(error);
+      alert("Gagal mengunduh sertifikat.");
+    }
+  };
   return (
     <PublicLayout>
       <div className="mx-auto max-w-md">
@@ -82,14 +114,13 @@ export default function CertificatePage() {
 
               <p className="font-bold text-slate-800">{result.name}</p>
 
-              <a
-                href={result.certificate_url}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 block rounded-xl bg-green-600 py-3 text-center font-semibold text-white"
+              <button
+                type="button"
+                onClick={handleDownloadCertificate}
+                className="mt-4 w-full rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
               >
                 Download Sertifikat
-              </a>
+              </button>
             </div>
           )}
         </div>
