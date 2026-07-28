@@ -35,38 +35,38 @@ export default function CertificatePage() {
     }
   };
 
-  const handleDownloadCertificate = async () => {
-    if (!result?.download_url) {
-      alert("Sertifikat tidak tersedia.");
-      return;
-    }
+  //   const handleDownloadCertificate = async () => {
+  //     if (!result?.download_url) {
+  //       alert("Sertifikat tidak tersedia.");
+  //       return;
+  //     }
 
-    try {
-      const response = await fetch(result.download_url);
+  //     try {
+  //       const response = await fetch(result.download_url);
 
-      if (!response.ok) {
-        throw new Error("Gagal mengambil sertifikat.");
-      }
+  //       if (!response.ok) {
+  //         throw new Error("Gagal mengambil sertifikat.");
+  //       }
 
-      const blob = await response.blob();
+  //       const blob = await response.blob();
 
-      const objectUrl = URL.createObjectURL(blob);
+  //       const objectUrl = URL.createObjectURL(blob);
 
-      const a = document.createElement("a");
-      a.href = objectUrl;
-      a.download = `Sertifikat-${nim}.pdf`;
+  //       const a = document.createElement("a");
+  //       a.href = objectUrl;
+  //       a.download = `Sertifikat-${nim}.pdf`;
 
-      document.body.appendChild(a);
-      a.click();
+  //       document.body.appendChild(a);
+  //       a.click();
 
-      a.remove();
+  //       a.remove();
 
-      URL.revokeObjectURL(objectUrl);
-    } catch (error) {
-      console.error(error);
-      alert("Gagal mengunduh sertifikat.");
-    }
-  };
+  //       URL.revokeObjectURL(objectUrl);
+  //     } catch (error) {
+  //       console.error(error);
+  //       alert("Gagal mengunduh sertifikat.");
+  //     }
+  //   };
   return (
     <PublicLayout>
       <div className="mx-auto max-w-md">
