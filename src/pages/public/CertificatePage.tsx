@@ -1,15 +1,21 @@
 import { useState } from "react";
 import PublicLayout from "../../layouts/PublicLayout";
 import { checkCertificate } from "../../services/certificateService";
+
 export default function CertificatePage() {
   const [nim, setNim] = useState("");
+
   const [result, setResult] = useState<{
     name: string;
-    download_url: string;
+    certificate_file: string;
   } | null>(null);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const certificateUrl = result?.certificate_file
+    ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}/${result.certificate_file}`
+    : null;
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,38 +41,41 @@ export default function CertificatePage() {
     }
   };
 
-  //   const handleDownloadCertificate = async () => {
-  //     if (!result?.download_url) {
-  //       alert("Sertifikat tidak tersedia.");
-  //       return;
-  //     }
+  const handleDownloadCertificate = async () => {
+    if (!certificateUrl) {
+      alert("Sertifikat tidak tersedia.");
+      return;
+    }
 
-  //     try {
-  //       const response = await fetch(result.download_url);
+    try {
+      const response = await fetch(certificateUrl);
 
-  //       if (!response.ok) {
-  //         throw new Error("Gagal mengambil sertifikat.");
-  //       }
+      if (!response.ok) {
+        throw new Error("Gagal mengambil sertifikat.");
+      }
 
-  //       const blob = await response.blob();
+      const blob = await response.blob();
 
-  //       const objectUrl = URL.createObjectURL(blob);
+      const objectUrl = URL.createObjectURL(blob);
 
-  //       const a = document.createElement("a");
-  //       a.href = objectUrl;
-  //       a.download = `Sertifikat-${nim}.pdf`;
+      const a = document.createElement("a");
 
-  //       document.body.appendChild(a);
-  //       a.click();
+      a.href = objectUrl;
+      a.download = `Sertifikat-${nim}.pdf`;
 
-  //       a.remove();
+      document.body.appendChild(a);
 
-  //       URL.revokeObjectURL(objectUrl);
-  //     } catch (error) {
-  //       console.error(error);
-  //       alert("Gagal mengunduh sertifikat.");
-  //     }
-  //   };
+      a.click();
+
+      a.remove();
+
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error(error);
+      alert("Gagal mengunduh sertifikat.");
+    }
+  };
+
   return (
     <PublicLayout>
       <div className="mx-auto max-w-md">
@@ -115,18 +124,7 @@ export default function CertificatePage() {
               <p className="font-bold text-slate-800">{result.name}</p>
 
               <button
-                onClick={() => {
-                  const link = document.createElement("a");
-
-                  link.href = result.download_url;
-                  link.download = `Sertifikat-${result.name}.pdf`;
-
-                  document.body.appendChild(link);
-
-                  link.click();
-
-                  document.body.removeChild(link);
-                }}
+                onClick={handleDownloadCertificate}
                 className="mt-4 block w-full rounded-xl bg-green-600 py-3 text-center font-semibold text-white"
               >
                 Download Sertifikat
